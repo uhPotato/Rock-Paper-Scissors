@@ -1,0 +1,216 @@
+<!DOCTYPE HTML>
+
+<html lang = "en">
+    <head>
+        <title>Ex12 Rocks Paper Scissors</title>
+        <link rel="stylesheet" type="text/css" href="ex12.css">
+    </head>
+
+
+<!--Visual Content STARTS Here-------------------------- -->
+<body>
+
+<h1>Rock-Paper-Scissors</h1>
+<div id = "submitName">
+	<label for ="yourName"><h2>1. Enter Your Name:</h2></label>
+	<input type="text" id="yourName" name = "yourName"/>&nbsp;&nbsp;
+	<button onclick = "submitName()">Submit Name</button>
+</div>
+
+<div id = "myChoice">
+<p id = "myTitle">Human</p>
+<img src = "img/blank.jpg" name = "myRPS" height = "130" width = "170">
+<p id="myRPS">&nbsp;</p> <!--display item here-->
+</div>
+
+<div id = "computerChoice">
+<p id = "compTitle">Computer</p>
+<img src = "img/blank.jpg" name = "compRPS" height = "130" width = "170">
+<p id="compRPS">&nbsp;</p> <!--display item here-->
+</div>
+
+<div id ="chooseButtons">
+<h2>2. Choose: Rock, Paper or Scissors...</h2>
+<button onclick = "chooseRock()" id ="rock_btn">ROCK</button>&nbsp;&nbsp;
+<button onclick = "choosePaper()" id ="paper_btn">PAPER</button>&nbsp;&nbsp;
+<button onclick = "chooseScissors()" id ="scissors_btn">SCISSORS</button></div>
+
+<div id = "results">
+<p id="winner">&nbsp;</p> <!--winner display here-->
+<p id="myPoints">&nbsp;</p> <!--human points here-->
+<p id="compPoints">&nbsp;</p> <!--computer points here-->
+<button id = "resetButton" onclick="resetPics()">Reset</button>
+</div>
+
+
+<!--JavaScript Starts Here----------------------------------------- -->
+<script>
+var $ = function(id) {
+return document.getElementById(id);
+}
+
+$("rock_btn").disabled=false;
+$("paper_btn").disabled=false;
+$("scissors_btn").disabled=false;
+
+var yourName;
+
+function submitName() {
+  yourName = $("yourName").value;
+	if (yourName==""){
+	$("myTitle").innerHTML = "Human";
+	yourName = "Human"
+	} else {
+	$("myTitle").innerHTML = yourName;
+	}
+}
+
+
+var rpsArray = ["Rock", "Paper", "Scissors"];
+var rpsLength = rpsArray.length;
+
+var blankImg = new Image();
+blankImg.src = "img/blank.jpg";
+
+ // initializes the array with some starting values
+ var rpsPics = new Array();
+  rpsPics[0] = new Image();
+  rpsPics[0].src = "img/rock.jpg";
+  rpsPics[1] = new Image();
+  rpsPics[1].src = "img/paper.jpg";
+  rpsPics[2] = new Image();
+  rpsPics[2].src = "img/scissors.jpg";
+ // end initialize
+
+	//starting point totals
+		var compPoints = 0;
+  	var myPoints = 0;
+
+  	var myRock;
+  	var myPaper;
+  	var myScissors;
+  	var ranNum;
+
+//the function that displays random superheroes
+function showRPS()
+{
+//generates a random number based on the length of the array
+	ranNum = Math.floor(Math.random()*rpsLength);
+
+//displays random image in the array using the number above
+	document.compRPS.src = rpsPics[ranNum].src;
+  $("compRPS").innerHTML = rpsArray[ranNum];
+  }
+
+  function chooseRock () {
+  $("myRPS").innerHTML = rpsArray[0]; //displays text rock
+  document.myRPS.src = rpsPics[0].src;
+  myRock = true;
+  myPaper = false;
+  myScissors = false;
+  showRPS();
+  if (myRock==true && ranNum==1) {
+  	compPoints++
+  	 $("winner").innerHTML = "Paper covers Rock: Computer Wins";
+  } else if
+  	(myRock==true && ranNum==2) {
+  	myPoints++
+  	 $("winner").innerHTML = "Rock crushes Scissors: Human Wins";
+  }else{
+  	$("winner").innerHTML = "Stalemate - No Points";
+  }
+  checkPoints();
+  $("compPoints").innerHTML = "Computer: "+compPoints;
+  $("myPoints").innerHTML = "Human: "+myPoints;
+
+  }
+
+  function choosePaper () {
+  $("myRPS").innerHTML = rpsArray[1]; //displays text rock
+  document.myRPS.src = rpsPics[1].src;
+  myRock = false;
+  myPaper = true;
+  myScissors = false;
+  showRPS();
+  if (myPaper==true && ranNum==0) {
+  	myPoints++
+  	 $("winner").innerHTML = "Paper covers Rock: Human Wins";
+  } else if
+  	(myPaper==true && ranNum==2) {
+  	compPoints++
+  	 $("winner").innerHTML = "Scissors cuts Paper: Computer Wins";
+  }else{
+  	$("winner").innerHTML = "Stalemate - No Points";
+  }
+   checkPoints();
+  $("compPoints").innerHTML = "Computer: "+compPoints;
+  $("myPoints").innerHTML = "Human: "+myPoints;
+
+  }
+
+  function chooseScissors () {
+  $("myRPS").innerHTML = rpsArray[2]; //displays text rock
+  document.myRPS.src = rpsPics[2].src;
+  myRock = false;
+  myPaper = false;
+  myScissors = true;
+  showRPS();
+  if (myScissors==true && ranNum==0) {
+  	compPoints++
+  	 $("winner").innerHTML = "Rock crushes Scissors: Computer Wins";
+  } else if
+  	(myScissors==true && ranNum==1) {
+  	myPoints++
+  	 $("winner").innerHTML = "Scissors cuts Paper: Human Wins";
+  }else{
+  	$("winner").innerHTML = "Stalemate - No Points";
+  }
+  checkPoints();
+  $("compPoints").innerHTML = "Computer: "+compPoints;
+  $("myPoints").innerHTML = "Human: "+myPoints;
+
+  }
+
+//if 1 team reaches 2 points, game restarts
+function checkPoints (){
+		$("resetButton").style.display="inline-block";
+  	if (compPoints>=2) {
+  	$("winner").innerHTML = "GAME OVER! - Computer Wins 2 out of 3";
+  	compPoints=" Wins!";
+  	$("rock_btn").disabled=true;
+  	$("paper_btn").disabled=true;
+  	$("scissors_btn").disabled=true;
+
+  	}
+  	if (myPoints>=2) {
+  	$("winner").innerHTML = "GAME OVER! - "+yourName+" Wins 2 out of 3";
+  	myPoints=" Wins!";
+  	$("rock_btn").disabled=true;
+  	$("paper_btn").disabled=true;
+  	$("scissors_btn").disabled=true;
+  	}
+  }
+
+function resetPics (){
+	compPoints=0;
+  	myPoints=0;
+  	$("yourName").value="";
+  	$("compPoints").innerHTML = "";
+  	$("myPoints").innerHTML = "";
+  	document.compRPS.src = blankImg.src;
+		document.myRPS.src = blankImg.src;
+		$("resetButton").style.display="none";
+		$("compRPS").innerHTML = "";
+  	$("myRPS").innerHTML = "";
+		$("winner").innerHTML = "";
+		yourName = "Human";
+  	document.getElementById("rock_btn").disabled=false;
+		document.getElementById("paper_btn").disabled=false;
+		document.getElementById("scissors_btn").disabled=false;
+	}
+</script>
+<!--JavaScript ENDS Here-->
+
+
+</body>
+</html>
